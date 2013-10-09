@@ -1,0 +1,161 @@
+<!doctype html>
+<html>
+<head>
+    <title>KLJ Sinaai</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/code.jquery.com_mobile_1.2.0_jquery.mobile-1.2.0.min.css">
+    <script src="js/code.jquery.com_jquery-1.8.2.min.js"></script>
+    <script src="js/code.jquery.com_mobile_1.2.0_jquery.mobile-1.2.0.min.js"></script>
+    <script type="text/javascript" src="js/ajax.googleapis.com_ajax_libs_jquery_1.3.0_jquery.min.js"></script>
+    <!--fb-->
+    <link rel="stylesheet" href="css/fbwall.css" />
+    <script src="js/jquery.js"></script>
+    <script src="js/fbwall.js"></script>
+    <script type="text/javascript">
+    $(function(){
+        $('#example1').fbWall({ id:'kljSinaai',accessToken:'547101865355252|17772NqDgV6XTxX3ed-v5ckydS0'});
+    });
+    </script>
+
+    <script>
+    function load()
+    {
+    if(!navigator.onLine)
+        alert("Je hebt een internet verbinding nodig!");
+    }
+    </script>
+</head>
+<body onload="load()">
+    <div data-role="page" id="one" data-theme="b">
+ 
+        <div data-role="header">
+            <h1>KLJ Sinaai</h1>
+        </div><!-- /header -->
+        
+        <div data-role="popup" id="positionWindow">
+            <p>Error!!</p>
+        </div>
+        
+        <div data-role="content" data-theme="b">
+            <img src="images/kljsinaai.png" alt="logo klj-sinaai" width="100%" width="200px"/>
+            <p><a href="#two" data-role="button">Activiteiten</a></p>
+            <p><a href="#three" data-role="button">Nieuws</a></p>
+            <p><a href="#for" data-role="button">Facebook</a></p>
+        </div><!-- /content -->
+ 
+    </div><!-- /page 1 -->
+    
+    <div data-role="page" id="two" data-theme="b">
+ 
+        <div data-role="header">
+            <a href='#one' class='ui-btn-left ui-btn-back' data-icon='arrow-l'>Terug</a> <h1>Activiteiten</h1> <a href='#three' class='ui-btn-right' data-icon='arrow-r' data-iconpos='right'>Volgende</a>
+        </div><!-- /header -->
+ 
+        <div data-role="content" data-theme="b">
+             <p>
+             <select id="myList">
+               <option value="">Selecteer groep</option>
+               <option value="kadees">Kadees</option>
+               <option value="lollys">Lolly's</option>
+               <option value="jonckers">Jonckers</option>
+               <option value="plus16">+16</option>
+             </select>
+            </p>
+            
+            <div id="act"></div>
+            
+            <script>
+                $("#myList").change(function(){
+                    //var input = document.getElementById("myList");
+                    $("#act").empty();
+                    var groep = this.value;
+                    $.ajax({
+                        url: "http://www.klj-sinaai.be/json/activiteiten.php",
+                        dataType: "json",
+                        success: function(json){
+                            //here inside json variable you've the json returned by your PHP
+                            $.each(json, function(index, element){
+                                if(element.groep === groep)
+                                {
+                                    function makeArray() {
+                                        for (i = 0; i<makeArray.arguments.length; i++)
+                                        this[i + 1] = makeArray.arguments[i];
+                                    }
+                                    var months = new makeArray('Januari','Februari','Maart','April','Mei',
+                                    'Juni','Juli','Augustus','September','Oktober','November','December');
+                                    var date = new Date(element.datum);
+                                    var day = date.getDate();
+                                    var month = date.getMonth() + 1;
+                                    var yy = date.getYear();
+                                    var year = (yy < 1000) ? yy + 1900 : yy;
+                                    
+                                    ($( "<h3>" ).html( element.naam )).appendTo( "#act" );
+                                    ($( "<h5>" ).html(day+" "+months[month]+" "+year )).appendTo( "#act" );
+                                    ($( "<p>" ).html( element.uitleg + "<br/>" + "<br/>" + " Start om: " +element.uur )).appendTo( "#act" );
+                                    ($( "<hr>" )).appendTo( "#act" );
+
+                                }
+                        }
+                        )}})
+                 });
+            </script>
+            <p><a href="#one" data-direction="reverse" data-role="button" data-theme="b">Terug</a></p>
+        </div><!-- /content -->
+ 
+    </div><!-- /page 2 -->
+    
+    
+    <div data-role="page" id="three" data-theme="b">
+ 
+        <div data-role="header">
+           <a href='#one' class='ui-btn-left ui-btn-back' data-icon='arrow-l'>Terug</a> <h1>Nieuws</h1> <a href='#for' class='ui-btn-right' data-icon='arrow-r' data-iconpos='right'>Volgende</a>
+        </div><!-- /header -->
+ 
+        <div data-role="content" data-theme="b">
+            
+            <div id="text"></div>
+ 
+<script>
+    
+$.ajax({
+    url: "http://www.klj-sinaai.be/json/home.php",
+    //url: "home.php",
+    dataType: "json",
+    success: function(json){
+        //here inside json variable you've the json returned by your PHP
+        $.each(json, function(index, element){
+                ($( "<h2>" ).html( element.titel)).appendTo( "#text" );
+                ($( "<p>" ).html( element.tekst)).appendTo( "#text" );
+    }          
+)
+var hrefs = $("#text").children("p").children("a");
+for(var i=1;i<hrefs.size()+1;i++)
+{
+var a = $("a#link"+i);//.remove();
+var l = a.attr("href");
+var link = l.substring(6);
+a.attr("href","http://klj-sinaai.be/"+link);
+}
+}})
+</script>
+
+
+            <p><a href="#one" data-direction="reverse" data-role="button" data-theme="b">Terug</a></p>
+        </div><!-- /content -->
+ 
+    </div><!-- /page three -->
+    
+    <div data-role="page" id="for" data-theme="b">
+ 
+        <div data-role="header">
+           <a href='#one' class='ui-btn-left ui-btn-back' data-icon='arrow-l'>Terug</a> <h1>Facebook</h1>
+        </div><!-- /header -->
+ 
+        <div data-role="content" data-theme="b">
+            <div id="example1"></div>
+            
+            <p><a href="#one" data-direction="reverse" data-role="button" data-theme="b">Terug</a></p>
+        </div><!-- /content -->
+ 
+    </div><!-- /page for-->
+</body>
