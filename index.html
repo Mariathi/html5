@@ -20,9 +20,13 @@
     <script>
     function load()
     {
-    if(!navigator.onLine)
+	var a = navigator.onLine;
+    if(a === false)
         alert("Je hebt een internet verbinding nodig!");
     }
+	else{
+		alert("Je hebt een internetverbinding");
+	}
     </script>
 </head>
 <body onload="load()">
