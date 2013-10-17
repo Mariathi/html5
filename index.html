@@ -13,27 +13,12 @@
     <script src="js/fbwall.js"></script>
     <script type="text/javascript">
     $(function(){
-        $('#example1').fbWall({ id:'kljSinaai',accessToken:'547101865355252|17772NqDgV6XTxX3ed-v5ckydS0'});
+        $('#fb').fbWall({ id:'kljSinaai',accessToken:'547101865355252|17772NqDgV6XTxX3ed-v5ckydS0'});
     });
     </script>
-
-    <script type="text/javascript">
-    var connectionStatus = false;
-
-	$(document).on('pagebeforeshow', '#one', function () {
-    setInterval(function () {
-        connectionStatus = navigator.onLine ? 'online' : 'offline';
-    }, 100);
-    $(document).on('click', '#acti', function () {
-        alert(connectionStatus);
-    });
-    $(document).on('click', '#news', function () {
-        alert(connectionStatus);
-    });
-	$(document).on('click', '#fcbk', function () {
-        alert(connectionStatus);
-    });
-	});
+    <script src="js/script.js"></script>
+    <script>
+        nIntervId = setInterval(checkConnection, 5000);
     </script>
 </head>
 <body>
@@ -44,7 +29,7 @@
         </div><!-- /header -->
         
         <div data-role="content" data-theme="b">
-            <img src="images/kljsinaai.png" alt="logo klj-sinaai" width="100%" width="200px"/>
+            <img src="images/kljsinaai.png" alt="logo klj-sinaai" width="100%"/>
             <p><a id="acti" href="#two" data-role="button">Activiteiten</a></p>
             <p><a id="news" href="#three" data-role="button">Nieuws</a></p>
             <p><a id="fcbk" href="#for" data-role="button">Facebook</a></p>
@@ -72,39 +57,7 @@
             <div id="act"></div>
             
             <script>
-                $("#myList").change(function(){
-                    //var input = document.getElementById("myList");
-                    $("#act").empty();
-                    var groep = this.value;
-                    $.ajax({
-                        url: "http://www.klj-sinaai.be/json/activiteiten.php",
-                        dataType: "json",
-                        success: function(json){
-                            //here inside json variable you've the json returned by your PHP
-                            $.each(json, function(index, element){
-                                if(element.groep === groep)
-                                {
-                                    function makeArray() {
-                                        for (i = 0; i<makeArray.arguments.length; i++)
-                                        this[i + 1] = makeArray.arguments[i];
-                                    }
-                                    var months = new makeArray('Januari','Februari','Maart','April','Mei',
-                                    'Juni','Juli','Augustus','September','Oktober','November','December');
-                                    var date = new Date(element.datum);
-                                    var day = date.getDate();
-                                    var month = date.getMonth() + 1;
-                                    var yy = date.getYear();
-                                    var year = (yy < 1000) ? yy + 1900 : yy;
-                                    
-                                    ($( "<h3>" ).html( element.naam )).appendTo( "#act" );
-                                    ($( "<h5>" ).html(day+" "+months[month]+" "+year )).appendTo( "#act" );
-                                    ($( "<p>" ).html( element.uitleg + "<br/>" + "<br/>" + " Start om: " +element.uur )).appendTo( "#act" );
-                                    ($( "<hr>" )).appendTo( "#act" );
-
-                                }
-                        }
-                        )}})
-                 });
+                    $("#myList").change(activiteiten);
             </script>
             <p><a href="#one" data-direction="reverse" data-role="button" data-theme="b">Terug</a></p>
         </div><!-- /content -->
@@ -123,27 +76,7 @@
             <div id="text"></div>
  
 <script>
-    
-$.ajax({
-    url: "http://www.klj-sinaai.be/json/home.php",
-    //url: "home.php",
-    dataType: "json",
-    success: function(json){
-        //here inside json variable you've the json returned by your PHP
-        $.each(json, function(index, element){
-                ($( "<h2>" ).html( element.titel)).appendTo( "#text" );
-                ($( "<p>" ).html( element.tekst)).appendTo( "#text" );
-    }          
-)
-var hrefs = $("#text").children("p").children("a");
-for(var i=1;i<hrefs.size()+1;i++)
-{
-var a = $("a#link"+i);//.remove();
-var l = a.attr("href");
-var link = l.substring(6);
-a.attr("href","http://klj-sinaai.be/"+link);
-}
-}})
+    $("#three").ready(homepage);
 </script>
 
 
@@ -159,7 +92,7 @@ a.attr("href","http://klj-sinaai.be/"+link);
         </div><!-- /header -->
  
         <div data-role="content" data-theme="b">
-            <div id="example1"></div>
+            <div id="fb"></div>
             
             <p><a href="#one" data-direction="reverse" data-role="button" data-theme="b">Terug</a></p>
         </div><!-- /content -->
